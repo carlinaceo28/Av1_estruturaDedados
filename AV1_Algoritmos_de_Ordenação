@@ -1,0 +1,175 @@
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+
+namespace CShp_LinkedList
+{
+    class Program
+    {
+        static int contadorSelection = 0;
+        static int contadorQuick = 0;
+        static int compQ = 0;
+        static int compS = 0;
+        static void Main(string[] args)
+        {
+           
+            int[] numeros = { 230, 45, 345, 4, 324, 90, 76, 34, 67 };
+            
+            Console.WriteLine("Array original\n");
+            foreach (int numero in numeros)
+                Console.Write($"{numero} ");
+            Console.WriteLine("\n");
+
+            var b = IntArrayBubbleSort(numeros);
+
+            Console.WriteLine("Array Ordenado\n");
+            int[] numerosOrdenados = b.Item2;
+            foreach (int numero in numerosOrdenados)
+                Console.Write($"{numero} ");
+            Console.WriteLine("\n");
+            int trocas = b.Item1;
+            int compB = b.Item3;
+            Console.WriteLine("Quantidades de passos(Bubble): " + trocas);
+            Console.WriteLine("Quantidades de comparações(Bubble): " + compB);
+            Console.WriteLine("\n");
+
+            int[] numeros2 = { 230, 45, 345, 4, 324, 90, 76, 34, 67 };
+
+            var q = IntArrayQuickSort(numeros2);
+
+            int trocasQ = q.Item1;
+            int compQ = q.Item2;
+            Console.WriteLine("Quantidades de passos(Quick): " + trocasQ);
+            Console.WriteLine("Quantidades de comparações(Quick): " + compQ);
+            Console.WriteLine("\n");
+
+            int[] numeros3 = { 230, 45, 345, 4, 324, 90, 76, 34, 67 };
+
+            var s = IntArrayselectionSort(numeros3);
+
+            int trocasS = s.Item1;
+            int compS = s.Item2;
+            Console.WriteLine("Quantidades de passos(Selection): " + trocasS);
+            Console.WriteLine("Quantidades de comparações(Selection): " + compS);
+        }
+
+        public static Tuple<int, int> IntArrayQuickSort(int[] lista)
+        {
+         
+            var resultado = IntArrayQuickSort(lista, 0, lista.Length - 1);
+            return resultado;
+        }
+        public static Tuple<int,int> IntArrayQuickSort(int[] lista, int esq, int dir)
+        {
+            
+            int i, j;
+            int pivot;
+            i = esq;
+            j = dir;
+            pivot = lista[(esq + dir) / 2];
+            while (true)
+            {
+                while (lista[i] < pivot)
+                    i++;
+                while (pivot < lista[j])
+                    j--;
+                compQ++;
+                if (i <= j)
+                {
+                    TrocarValoresQ(lista, i, j);
+                    i++;
+                    j--;
+                   
+                }
+                compQ++;
+                if (i > j)
+                    break;
+            }
+            compQ++;
+            if (esq < j)
+                IntArrayQuickSort(lista, esq, j);
+            compQ++;
+            if (i < dir)
+                IntArrayQuickSort(lista, i, dir);
+            return new Tuple<int,int>(contadorQuick,compQ);
+        }
+
+
+        public static Tuple<int, int[],int> IntArrayBubbleSort(int[] lista)
+            {
+                int i, j;
+                int contador = 0;
+                int compB = 0;
+                int N = lista.Length;
+                for (j = 0; j < N; j++)
+                {
+                    for (i = 0; i < N-1; i++)
+                    {
+                        compB++;
+                        if (lista[i] > lista[i + 1])
+                        {
+                            TrocarValores(lista, i, i + 1);
+                            contador++;
+                        }
+
+                    }
+                }
+                    return new Tuple<int, int[],int>(contador, lista,compB);
+        }
+
+        public static Tuple<int, int> IntArrayselectionSort(int[] lista)
+        {
+            
+ 
+            for (int i = 0; i < lista.Length; ++i)
+            {
+                int menor = i;
+                for (int j = i; j < lista.Length; ++j)
+                {
+                    compS++;
+                    if (lista[j] < lista[menor])
+                    {
+                        menor = j;
+                    }
+                }
+                
+                TrocarValoresS(lista, i, menor);
+                contadorSelection++;
+            }
+            return new Tuple<int, int>(contadorSelection, compS); ;
+        }
+        static int[] TrocarValoresQ(int[] listaDados, int a, int b)
+                {
+                    int temporario;
+                    temporario = listaDados[a];
+                    listaDados[a] = listaDados[b];
+                    listaDados[b] = temporario;
+                    contadorQuick++;
+                    return listaDados;
+                }
+        static int[] TrocarValores(int[] listaDados, int a, int b)
+        {
+            int temporario;
+            temporario = listaDados[a];
+            listaDados[a] = listaDados[b];
+            listaDados[b] = temporario;
+           
+            return listaDados;
+        }
+        static int[] TrocarValoresS(int[] listaDados, int a, int b)
+        {
+            int temporario;
+            temporario = listaDados[a];
+            listaDados[a] = listaDados[b];
+            listaDados[b] = temporario;
+
+            return listaDados;
+        }
+
+
+    }
+        }
+    
+
